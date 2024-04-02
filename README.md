@@ -53,6 +53,7 @@ if __name__ == '__main__':
 4. Implement pagination for displaying blog posts.
 
 ## EVALUATION CRITERIA
+- &#9989; Can install pip dependencies from a requirements.txt file
 - &#9989; Can run the project from different device & runs OK.
 - &#9989; Can access to all endpoints without problems.
 - &#9989; Can create a blogpost in project when running local.
