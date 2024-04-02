@@ -51,3 +51,11 @@ if __name__ == '__main__':
 2. Add support for user authentication and authorization.
 3. Store blog posts in a database (e.g., SQLite, PostgreSQL) instead of an in-memory data store.
 4. Implement pagination for displaying blog posts.
+
+## EVALUATION CRITERIA
+- &#9989; Can run the project from different device & runs OK.
+- &#9989; Can access to all endpoints without problems.
+- &#9989; Can create a blogpost in project when running local.
+- &#9989; Can request all blogposts from project & watch a HTML render with info.
+- &#9989; Can update a specific blogpost & check new changes from GET render.
+- &#9989; Can delete a specific blogpost & check in GET render.
