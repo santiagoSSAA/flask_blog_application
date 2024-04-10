@@ -1,45 +1,58 @@
 from flask import Flask, render_template, request, redirect #importamos lo que necesitamos 
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 
-app = Flask(__name__) #configuracion de la aplicacion en nuestra base de datos
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////home/kuma/Desktop/curso-python/Blog/vblog/blog.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
+import random
+
+app = Flask(__name__) 
 app.app_context().push()
+POSTS = []
 
-class Post(db.Model):
-    __tablename__ = "post"
-    id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String, nullable=False)
-    fecha = db.Column(db.DateTime, default=datetime.now)
-    texto = db.Column(db.String, nullable=False)
+
+class BlogPost:
+    title: str
+    content: str
+    author: str
+    date_created: str
+    id: int
+
+    def create(
+        self,
+        title,
+        content,
+        author,
+        date_created
+    ):
+        self.id = random.randint(10000, 99999)
+        self.title = title
+        self.content = content
+        self.author = author
+        self.date_created = date_created
+        POSTS.append(self)
+
+    def update(
+            self,
+            id,
+            title=None,
+            content=None,
+            author=None
+        ):
+        for post in POSTS:
+            if post.id == int(id):
+                if title: post.title = title
+                elif content: post.content = content
+                elif author: post.author = author
+
+    def delete(self, id):
+        position = None
+        for index, post in enumerate(POSTS):
+            if post.id == int(id):
+                position = index
+                break
+        del POSTS[position]
 
 @app.route("/")
 def inicio():
-    posts = Post.query.order_by(Post.fecha.desc()).all()
-    return render_template("inicio.html", posts=posts)
-
-@app.route("/agregar")
-def agregar():
-    return render_template("agregar.html")
-    
-@app.route("/crear", methods=["POST"])
-def crear_post():
-    titulo = request.form.get("titulo")
-    texto = request.form.get("texto")
-    post = Post(titulo=titulo, texto=texto)
-    db.session.add(post)
-    db.session.commit()
-    return redirect("/")
-
-@app.route("/borrar", methods=["POST"])
-def borrar():
-    post_id = request.form.get("post_id")
-    post = db.session.query(Post).filter(Post.id==post_id).first()
-    db.session.delete(post)
-    db.session.commit()
-    return redirect("/")
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
