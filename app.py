@@ -29,6 +29,19 @@ class BlogPost:
         self.date_created = date_created
         POSTS.append(self)
 
+    def get(self):
+        from copy import copy
+        return copy(POSTS)
+    
+    # Como hacer un get específico?
+    def get_id(self, id):
+        position = None
+        for index, post in enumerate(POSTS):
+            if post.id == int(id):
+                position = index
+                break
+        return POSTS[position]
+
     def update(
             self,
             id,
